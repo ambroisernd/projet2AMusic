@@ -64,9 +64,9 @@ def generate_midi_file(outputName, notes):
     for x in notes:
         if RepresentsInt(x[0]):
             ch = x.split(".")
-            sheet.append(chord.Chord([int(k) for k in ch], quarterLength=0.5))
+            sheet.append(chord.Chord([int(k) for k in ch], quarterLength=0.25))
         else:
-            sheet.append(note.Note(x, quarterLength=0.5))
+            sheet.append(note.Note(x, quarterLength=0.25))
     mf = midi.translate.streamToMidiFile(sheet)
     mf.open(outputName, "wb")
     mf.write()
