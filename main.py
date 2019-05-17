@@ -17,7 +17,7 @@ notes_to_ix = {n: i for i, n in enumerate(voc)}
 ix_to_notes = {i: n for i, n in enumerate(voc)}
 n_values = len(ix_to_notes)
 
-X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, 60, 30)
+X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, 200, 10)
 print(X.shape)
 print(Y.shape)
 
@@ -87,7 +87,7 @@ model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy
 m = X.shape[0]
 a0 = np.zeros((m, n_a))
 c0 = np.zeros((m, n_a))
-model.fit([X, a0, c0], list(Y), epochs=1000)
+model.fit([X, a0, c0], list(Y), epochs=100)
 
 
 # GRADED FUNCTION: music_inference_model
