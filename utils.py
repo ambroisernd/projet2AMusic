@@ -36,10 +36,9 @@ ix_to_notes = {i: n for i, n in enumerate(voc)}
 # END TODO
 """
 
-def generate_X_Y_from_one_music(name_to_index, notes, Tx, m):
+def generate_X_Y_from_one_music(note_to_index, notes, Tx, m):
     """Generate vectors X and Y for training where X[i+1]=Y[i]"""
-    Tx = Tx
-    N_values = len(name_to_index)
+    N_values = len(note_to_index)
     np.random.seed(0)
     X = np.zeros((m, Tx, N_values), dtype=np.bool)
     Y = np.zeros((m, Tx, N_values), dtype=np.bool)
@@ -47,7 +46,7 @@ def generate_X_Y_from_one_music(name_to_index, notes, Tx, m):
         random_idx = np.random.choice(len(notes) - Tx)
         notes_data = notes[random_idx:(random_idx + Tx)]
         for j in range(Tx):
-            idx = name_to_index[notes_data[j]]
+            idx = note_to_index[notes_data[j]]
             if j != 0:
                 X[i, j, idx] = 1
                 Y[i, j - 1, idx] = 1
