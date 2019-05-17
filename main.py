@@ -11,13 +11,15 @@ from keras.utils import to_categorical
 from keras.optimizers import Adam
 from keras import backend as K
 
-notes = get_notes("afine-1.MID")
+notes = get_notes("elise.mid")
 voc = generate_vocab(notes)
 notes_to_ix = {n: i for i, n in enumerate(voc)}
 ix_to_notes = {i: n for i, n in enumerate(voc)}
 n_values = len(ix_to_notes)
 
-X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, 60, 30)
+Tx = 200
+
+X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, Tx, 10)
 print(X.shape)
 print(Y.shape)
 
@@ -76,7 +78,7 @@ def djmodel(Tx, n_a, n_values):
 
     return model
 
-model = djmodel(Tx = 60 , n_a = n_a, n_values = n_values)
+model = djmodel(Tx = Tx , n_a = n_a, n_values = n_values)
 
 opt = Adam(lr=0.01, beta_1=0.9, beta_2=0.999, decay=0.01)
 
@@ -85,7 +87,7 @@ model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy
 m = X.shape[0]
 a0 = np.zeros((m, n_a))
 c0 = np.zeros((m, n_a))
-model.fit([X, a0, c0], list(Y), epochs=300)
+model.fit([X, a0, c0], list(Y), epochs=1000)
 
 
 # GRADED FUNCTION: music_inference_model
@@ -142,7 +144,7 @@ def music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=64, Ty=100):
 
     return inference_model
 
-inference_model = music_inference_model(LSTM_cell, densor, n_values = n_values, n_a = n_a, Ty = 100)
+inference_model = music_inference_model(LSTM_cell, densor, n_values = n_values, n_a = n_a, Ty = 300)
 
 x_initializer = np.zeros((1, 1, n_values))
 #x_initializer[0, 0, 1] = 1  #initialise a la premiere note
@@ -185,4 +187,4 @@ def generate_music():
     for x in indices:
         toPlay.append(ix_to_notes[x[0]])
     return toPlay
-generate_midi_file("test3.mid", generate_music())
+generate_midi_file("eliseN.mid", generate_music())
