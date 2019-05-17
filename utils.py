@@ -25,6 +25,7 @@ def generate_vocab(notes):
     """Generate vocabulary based on the input notes"""
     return np.unique(np.array(notes))
 
+
 """
 # TODO: A mettre dans le main
 
@@ -35,6 +36,7 @@ ix_to_notes = {i: n for i, n in enumerate(voc)}
 
 # END TODO
 """
+
 
 def generate_X_Y_from_one_music(name_to_index, notes, Tx, m):
     """Generate vectors X and Y for training where X[i+1]=Y[i]"""

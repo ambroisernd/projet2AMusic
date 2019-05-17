@@ -17,16 +17,15 @@ notes_to_ix = {n: i for i, n in enumerate(voc)}
 ix_to_notes = {i: n for i, n in enumerate(voc)}
 n_values = len(ix_to_notes)
 
-Tx = 200
-
-X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, Tx, 10)
+X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, 60, 30)
 print(X.shape)
 print(Y.shape)
 
+Tx = X.shape[1]
 
 n_a = 64
 reshapor = Reshape((1, n_values))
-LSTM_cell = LSTM(n_a, return_state = True)
+LSTM_cell = LSTM(n_a, return_state=True)
 densor = Dense(n_values, activation='softmax')
 
 
@@ -78,7 +77,8 @@ def djmodel(Tx, n_a, n_values):
 
     return model
 
-model = djmodel(Tx = Tx , n_a = n_a, n_values = n_values)
+
+model = djmodel(Tx=Tx, n_a=n_a, n_values=n_values)
 
 opt = Adam(lr=0.01, beta_1=0.9, beta_2=0.999, decay=0.01)
 
@@ -144,10 +144,11 @@ def music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=64, Ty=100):
 
     return inference_model
 
-inference_model = music_inference_model(LSTM_cell, densor, n_values = n_values, n_a = n_a, Ty = 300)
+
+inference_model = music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=n_a, Ty=300)
 
 x_initializer = np.zeros((1, 1, n_values))
-#x_initializer[0, 0, 1] = 1  #initialise a la premiere note
+# x_initializer[0, 0, 1] = 1  #initialise a la premiere note
 a_initializer = np.zeros((1, n_a))
 c_initializer = np.zeros((1, n_a))
 
@@ -181,10 +182,13 @@ def predict_and_sample(inference_model, x_initializer=x_initializer, a_initializ
 
     return results, indices
 
+
 def generate_music():
     _, indices = predict_and_sample(inference_model, x_initializer, a_initializer, c_initializer)
     toPlay = []
     for x in indices:
         toPlay.append(ix_to_notes[x[0]])
     return toPlay
-generate_midi_file("eliseN.mid", generate_music())
+
+
+generate_midi_file("jazz.mid", generate_music())
