@@ -2,11 +2,11 @@ from keras.utils import to_categorical
 from music21 import *
 import numpy as np
 
-def get_notes():
+def get_notes(path_to_midi):
     """Print notes from midifile"""
     notes = []
 
-    midi = converter.parse("elise.mid")
+    midi = converter.parse(path_to_midi)
 
     s2 = instrument.partitionByInstrument(midi)
     notes_to_parse = s2.parts[0].recurse()
@@ -18,7 +18,7 @@ def get_notes():
             #   print(str(n))
             notes.append('.'.join(str(n) for n in element.normalOrder))
 
-    return notes[:30]
+    return notes
 
 
 def generate_vocab(notes):
@@ -36,20 +36,25 @@ ix_to_notes = {i: n for i, n in enumerate(voc)}
 # END TODO
 """
 
-def generate_X_Y(name_to_index, notes):
+def generate_X_Y_from_one_music(name_to_index, notes, Tx, m):
     """Generate vectors X and Y for training where X[i+1]=Y[i]"""
-    X = []
-    Y = []
-    for i in range(len(notes)):
-        crt = np.zeros(len(name_to_index))
-        crt[name_to_index[notes[i]]] = 1
-        X.append(crt)
-        if i > 0:
-            Y.append(crt)
-    Y.append(np.zeros(len(name_to_index)))
-    return np.expand_dims(np.array(X), axis=0), np.expand_dims(np.array(Y), axis=1)
+    Tx = Tx
+    N_values = len(name_to_index)
+    np.random.seed(0)
+    X = np.zeros((m, Tx, N_values), dtype=np.bool)
+    Y = np.zeros((m, Tx, N_values), dtype=np.bool)
+    for i in range(m):
+        random_idx = np.random.choice(len(notes) - Tx)
+        notes_data = notes[random_idx:(random_idx + Tx)]
+        for j in range(Tx):
+            idx = name_to_index[notes_data[j]]
+            if j != 0:
+                X[i, j, idx] = 1
+                Y[i, j - 1, idx] = 1
 
-#print(generate_X_Y(notes_to_ix, get_notes()))
+    Y = np.swapaxes(Y, 0, 1)
+    Y = Y.tolist()
+    return np.asarray(X), np.asarray(Y)
 
 
 def RepresentsInt(s):
@@ -73,5 +78,3 @@ def generate_midi_file(outputName, notes):
     mf.open(outputName, "wb")
     mf.write()
     mf.close()
-
-#generate_midi_file("yeayea.mid", get_notes())
