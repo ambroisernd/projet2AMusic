@@ -1,5 +1,5 @@
 from __future__ import print_function
-import tensorflow
+import tensorflow as tf
 from utils import *
 import IPython
 import sys
@@ -11,13 +11,13 @@ from keras.utils import to_categorical
 from keras.optimizers import Adam
 from keras import backend as K
 
-notes = get_notes("elise.mid")
+notes = get_notes("bet_small/*.mid")
 voc = generate_vocab(notes)
 notes_to_ix = {n: i for i, n in enumerate(voc)}
 ix_to_notes = {i: n for i, n in enumerate(voc)}
 n_values = len(ix_to_notes)
 
-X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, 200, 10)
+X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, 30, 100)
 print(X.shape)
 print(Y.shape)
 
@@ -25,13 +25,11 @@ Tx = X.shape[1]
 
 n_a = 64
 reshapor = Reshape((1, n_values))
-LSTM_cell = LSTM(n_a, return_state=True)
+LSTM_cell = LSTM(n_a, return_state=True, dropout=0.4)
 densor = Dense(n_values, activation='softmax')
 
 
-# GRADED FUNCTION: djmodel
-
-def djmodel(Tx, n_a, n_values):
+def music_model(Tx, n_a, n_values):
     """
     Implement the model
 
@@ -43,42 +41,23 @@ def djmodel(Tx, n_a, n_values):
     Returns:
     model -- a keras model with the
     """
-
-    # Define the input of your model with a shape
     X = Input(shape=(Tx, n_values))
-
-    # Define s0, initial hidden state for the decoder LSTM
     a0 = Input(shape=(n_a,), name='a0')
     c0 = Input(shape=(n_a,), name='c0')
     a = a0
     c = c0
-
-    ### START CODE HERE ###
-    # Step 1: Create empty list to append the outputs while you iterate (≈1 line)
     outputs = []
-
-    # Step 2: Loop
     for t in range(Tx):
-        # Step 2.A: select the "t"th time step vector from X.
         x = Lambda(lambda x: X[:, t, :])(X)
-        # Step 2.B: Use reshapor to reshape x to be (1, n_values) (≈1 line)
         x = reshapor(x)
-        # Step 2.C: Perform one step of the LSTM_cell
         a, _, c = LSTM_cell(x, initial_state=[a, c])
-        # Step 2.D: Apply densor to the hidden state output of LSTM_Cell
         out = densor(a)
-        # Step 2.E: add the output to "outputs"
         outputs.append(out)
-
-    # Step 3: Create model instance
     model = Model([X, a0, c0], outputs)
-
-    ### END CODE HERE ###
-
     return model
 
 
-model = djmodel(Tx=Tx, n_a=n_a, n_values=n_values)
+model = music_model(Tx=Tx, n_a=n_a, n_values=n_values)
 
 opt = Adam(lr=0.01, beta_1=0.9, beta_2=0.999, decay=0.01)
 
@@ -87,10 +66,15 @@ model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy
 m = X.shape[0]
 a0 = np.zeros((m, n_a))
 c0 = np.zeros((m, n_a))
-model.fit([X, a0, c0], list(Y), epochs=100)
+model.fit([X, a0, c0], list(Y), epochs=200)
 
 
-# GRADED FUNCTION: music_inference_model
+def one_hot(x):
+    x = K.argmax(x)
+    x = tf.one_hot(x, n_values)
+    x = RepeatVector(1)(x)
+    return x
+
 
 def music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=64, Ty=100):
     """
@@ -106,54 +90,29 @@ def music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=64, Ty=100):
     Returns:
     inference_model -- Keras model instance
     """
-
-    # Define the input of your model with a shape
     x0 = Input(shape=(1, n_values))
-
-    # Define s0, initial hidden state for the decoder LSTM
     a0 = Input(shape=(n_a,), name='a0')
     c0 = Input(shape=(n_a,), name='c0')
     a = a0
     c = c0
     x = x0
-
-    ### START CODE HERE ###
-    # Step 1: Create an empty list of "outputs" to later store your predicted values (≈1 line)
     outputs = []
-
-    # Step 2: Loop over Ty and generate a value at every time step
     for t in range(Ty):
-        # Step 2.A: Perform one step of LSTM_cell (≈1 line)
         a, _, c = LSTM_cell(x, initial_state=[a, c])
-
-        # Step 2.B: Apply Dense layer to the hidden state output of the LSTM_cell (≈1 line)
         out = densor(a)
-
-        # Step 2.C: Append the prediction "out" to "outputs". out.shape = (None, 78) (≈1 line)
         outputs.append(out)
-
-        # Step 2.D: Select the next value according to "out", and set "x" to be the one-hot representation of the
-        #           selected value, which will be passed as the input to LSTM_cell on the next step. We have provided
-        #           the line of code you need to do this.
-        x = RepeatVector(1)(out)
-
-        # Step 3: Create model instance with the correct "inputs" and "outputs" (≈1 line)
+        x = Lambda(one_hot)(out)
     inference_model = Model([x0, a0, c0], outputs)
-
-    ### END CODE HERE ###
-
     return inference_model
 
 
-inference_model = music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=n_a, Ty=300)
+inference_model = music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=n_a, Ty=100)
 
 x_initializer = np.zeros((1, 1, n_values))
-# x_initializer[0, 0, 1] = 1  #initialise a la premiere note
+#x_initializer[0, 0, 1] = 1  # initialise a la premiere note
 a_initializer = np.zeros((1, n_a))
 c_initializer = np.zeros((1, n_a))
 
-
-# GRADED FUNCTION: predict_and_sample
 
 def predict_and_sample(inference_model, x_initializer=x_initializer, a_initializer=a_initializer,
                        c_initializer=c_initializer):
@@ -170,25 +129,18 @@ def predict_and_sample(inference_model, x_initializer=x_initializer, a_initializ
     results -- numpy-array of shape (Ty, 78), matrix of one-hot vectors representing the values generated
     indices -- numpy-array of shape (Ty, 1), matrix of indices representing the values generated
     """
-
-    ### START CODE HERE ###
-    # Step 1: Use your inference model to predict an output sequence given x_initializer, a_initializer and c_initializer.
     pred = inference_model.predict([x_initializer, a_initializer, c_initializer])
-    # Step 2: Convert "pred" into an np.array() of indices with the maximum probabilities
     indices = np.argmax(pred, axis=2)
-    # Step 3: Convert indices to one-hot vectors, the shape of the results should be (1, )
     results = to_categorical(indices)
-    ### END CODE HERE ###
-
     return results, indices
 
 
 def generate_music():
     _, indices = predict_and_sample(inference_model, x_initializer, a_initializer, c_initializer)
-    toPlay = []
+    to_play = []
     for x in indices:
-        toPlay.append(ix_to_notes[x[0]])
-    return toPlay
+        to_play.append(ix_to_notes[x[0]])
+    return to_play
 
 
-generate_midi_file("eliseOver.mid", generate_music())
+generate_midi_file("piano.mid", generate_music())

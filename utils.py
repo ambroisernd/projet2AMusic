@@ -1,29 +1,44 @@
+import glob
+
 from keras.utils import to_categorical
 from music21 import *
 import numpy as np
+import glob
+
 
 def get_notes(path_to_midi):
     """Print notes from midifile"""
     notes = []
+    instr_part = []
+    instr = instrument.Piano
+    for file in glob.glob(path_to_midi):
+        midi = converter.parse(file)
+        print("Parsing %s" % file)
+        try:
+            for part in instrument.partitionByInstrument(midi):
+                print(part)
+                if isinstance(part.getInstrument(), instr):
+                    instr_part.append(part)
+        except:
+            instr_part.append(midi.flat)
 
-    midi = converter.parse(path_to_midi)
-
-    s2 = instrument.partitionByInstrument(midi)
-    notes_to_parse = s2.parts[0].recurse()
-    for element in notes_to_parse:
-        if isinstance(element, note.Note):
-            notes.append(str(element.pitch))
-        elif isinstance(element, chord.Chord):
-            # for n in element.pitches:
-            #   print(str(n))
-            notes.append('.'.join(str(n) for n in element.normalOrder))
-
+    for e in instr_part:
+        for _note in e.recurse().notes:
+            print(_note)
+            if isinstance(_note, note.Note):
+                notes.append(str(_note.pitch))
+            elif isinstance(_note, chord.Chord):
+                # for n in element.pitches:
+                #   print(str(n))
+                notes.append('.'.join(str(n) for n in _note.normalOrder))
+    print(notes)
     return notes
 
 
 def generate_vocab(notes):
     """Generate vocabulary based on the input notes"""
     return np.unique(np.array(notes))
+
 
 """
 # TODO: A mettre dans le main
@@ -35,6 +50,7 @@ ix_to_notes = {i: n for i, n in enumerate(voc)}
 
 # END TODO
 """
+
 
 def generate_X_Y_from_one_music(note_to_index, notes, Tx, m):
     """Generate vectors X and Y for training where X[i+1]=Y[i]"""
@@ -65,15 +81,15 @@ def RepresentsInt(s):
         return False
 
 
-def generate_midi_file(outputName, notes):
+def generate_midi_file(output_name, notes):
     sheet = stream.Stream()
     for x in notes:
         if RepresentsInt(x[0]):
             ch = x.split(".")
-            sheet.append(chord.Chord([int(k) for k in ch], quarterLength=0.25))
+            sheet.append(chord.Chord([int(k) for k in ch], quarterLength=0.5))
         else:
-            sheet.append(note.Note(x, quarterLength=0.25))
+            sheet.append(note.Note(x, quarterLength=0.5))
     mf = midi.translate.streamToMidiFile(sheet)
-    mf.open(outputName, "wb")
+    mf.open(output_name, "wb")
     mf.write()
     mf.close()
