@@ -11,7 +11,7 @@ from keras.utils import to_categorical
 from keras.optimizers import Adam
 from keras import backend as K
 
-notes = get_notes("bet_small/*.mid")
+notes = get_notes("midi_training/*.mid")
 voc = generate_vocab(notes)
 notes_to_ix = {n: i for i, n in enumerate(voc)}
 ix_to_notes = {i: n for i, n in enumerate(voc)}
@@ -22,10 +22,11 @@ print(X.shape)
 print(Y.shape)
 
 Tx = X.shape[1]
+Ty = 100
 
 n_a = 64
 reshapor = Reshape((1, n_values))
-LSTM_cell = LSTM(n_a, return_state=True, dropout=0.4)
+LSTM_cell = LSTM(n_a, return_state=True, dropout=0.2)
 densor = Dense(n_values, activation='softmax')
 
 
@@ -66,7 +67,7 @@ model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy
 m = X.shape[0]
 a0 = np.zeros((m, n_a))
 c0 = np.zeros((m, n_a))
-model.fit([X, a0, c0], list(Y), epochs=200)
+model.fit([X, a0, c0], list(Y), epochs=1000)
 
 
 def one_hot(x):
@@ -106,7 +107,7 @@ def music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=64, Ty=100):
     return inference_model
 
 
-inference_model = music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=n_a, Ty=100)
+inference_model = music_inference_model(LSTM_cell, densor, n_values=n_values, n_a=n_a, Ty=Ty)
 
 x_initializer = np.zeros((1, 1, n_values))
 #x_initializer[0, 0, 1] = 1  # initialise a la premiere note
@@ -129,8 +130,10 @@ def predict_and_sample(inference_model, x_initializer=x_initializer, a_initializ
     results -- numpy-array of shape (Ty, 78), matrix of one-hot vectors representing the values generated
     indices -- numpy-array of shape (Ty, 1), matrix of indices representing the values generated
     """
+    indices = []
     pred = inference_model.predict([x_initializer, a_initializer, c_initializer])
-    indices = np.argmax(pred, axis=2)
+    for i in range(Ty):
+        indices.append(np.random.choice([k for k in range(n_values)], p=pred[i].ravel()))
     results = to_categorical(indices)
     return results, indices
 
@@ -139,8 +142,8 @@ def generate_music():
     _, indices = predict_and_sample(inference_model, x_initializer, a_initializer, c_initializer)
     to_play = []
     for x in indices:
-        to_play.append(ix_to_notes[x[0]])
+        to_play.append(ix_to_notes[x])
     return to_play
 
 
-generate_midi_file("piano.mid", generate_music())
+generate_midi_file("elise_1000epoch.mid", generate_music())
