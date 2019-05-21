@@ -11,18 +11,18 @@ from keras.utils import to_categorical
 from keras.optimizers import Adam
 from keras import backend as K
 
-notes = get_notes("midi_training/*.mid")
+notes = get_notes("e/*.mid")
 voc = generate_vocab(notes)
 notes_to_ix = {n: i for i, n in enumerate(voc)}
 ix_to_notes = {i: n for i, n in enumerate(voc)}
 n_values = len(ix_to_notes)
-
-X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, 30, 100)
+print(voc)
+X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, 60, 100)
 print(X.shape)
 print(Y.shape)
 
 Tx = X.shape[1]
-Ty = 100
+Ty = 200
 
 n_a = 64
 reshapor = Reshape((1, n_values))
@@ -67,7 +67,7 @@ model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy
 m = X.shape[0]
 a0 = np.zeros((m, n_a))
 c0 = np.zeros((m, n_a))
-model.fit([X, a0, c0], list(Y), epochs=1000)
+model.fit([X, a0, c0], list(Y), epochs=500)
 
 
 def one_hot(x):
@@ -146,4 +146,4 @@ def generate_music():
     return to_play
 
 
-generate_midi_file("elise_1000epoch.mid", generate_music())
+generate_midi_file("maestro4.mid", generate_music())

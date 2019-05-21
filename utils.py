@@ -5,15 +5,15 @@ from music21 import *
 import numpy as np
 import glob
 
-
 def get_notes(path_to_midi):
-    """Print notes from midifile"""
+    """Parse notes from midifile"""
     notes = []
     instr_part = []
     instr = instrument.Piano
+    print("Start parsing")
     for file in glob.glob(path_to_midi):
-        midi = converter.parse(file)
         print("Parsing %s" % file)
+        midi = converter.parse(file)
         try:
             for part in instrument.partitionByInstrument(midi):
                 print(part)
@@ -24,16 +24,25 @@ def get_notes(path_to_midi):
 
     for e in instr_part:
         for _note in e.recurse().notes:
-            print(_note)
             if isinstance(_note, note.Note):
-                notes.append(str(_note.pitch))
+                d = str(_note.duration)[:-1].split()[-1]
+                notes.append((str(_note.pitch)+" "+d))
             elif isinstance(_note, chord.Chord):
                 # for n in element.pitches:
                 #   print(str(n))
-                notes.append('.'.join(str(n) for n in _note.normalOrder))
-    print(notes)
+                ch = '/'.join(str(n) for n in _note.normalOrder)
+                d = str(_note.duration)[:-1].split()[-1]
+                notes.append(ch+"/"+d)
     return notes
 
+def parse_duration(s):
+    """return string duration to float"""
+    if "/" in s:
+        return float(s.split("/")[0])/float(s.split("/")[-1])
+    else:
+        return float(s)
+
+print(parse_duration('10/20'))
 
 def generate_vocab(notes):
     """Generate vocabulary based on the input notes"""
@@ -85,10 +94,10 @@ def generate_midi_file(output_name, notes):
     sheet = stream.Stream()
     for x in notes:
         if RepresentsInt(x[0]):
-            ch = x.split(".")
-            sheet.append(chord.Chord([int(k) for k in ch], quarterLength=0.5))
+            ch = x.split("/")
+            sheet.append(chord.Chord([int(k) for k in ch[:-1]], quarterLength=parse_duration(ch[-1])))
         else:
-            sheet.append(note.Note(x, quarterLength=0.5))
+            sheet.append(note.Note(x.split()[0], quarterLength=parse_duration(x.split()[-1])))
     mf = midi.translate.streamToMidiFile(sheet)
     mf.open(output_name, "wb")
     mf.write()
