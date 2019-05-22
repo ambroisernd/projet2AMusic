@@ -30,9 +30,10 @@ def get_notes(path_to_midi):
             elif isinstance(_note, chord.Chord):
                 # for n in element.pitches:
                 #   print(str(n))
-                ch = '/'.join(str(n) for n in _note.normalOrder)
+                ch = '$'.join(str(n) for n in _note.normalOrder)
                 d = str(_note.duration)[:-1].split()[-1]
-                notes.append(ch+"/"+d)
+                notes.append(ch+"$"+d)
+    print(notes)
     return notes
 
 def parse_duration(s):
@@ -42,7 +43,6 @@ def parse_duration(s):
     else:
         return float(s)
 
-print(parse_duration('10/20'))
 
 def generate_vocab(notes):
     """Generate vocabulary based on the input notes"""
@@ -94,7 +94,7 @@ def generate_midi_file(output_name, notes):
     sheet = stream.Stream()
     for x in notes:
         if RepresentsInt(x[0]):
-            ch = x.split("/")
+            ch = x.split("$")
             sheet.append(chord.Chord([int(k) for k in ch[:-1]], quarterLength=parse_duration(ch[-1])))
         else:
             sheet.append(note.Note(x.split()[0], quarterLength=parse_duration(x.split()[-1])))

@@ -11,7 +11,7 @@ from keras.utils import to_categorical
 from keras.optimizers import Adam
 from keras import backend as K
 
-notes = get_notes("e/*.mid")
+notes = get_notes("bach/*.mid")
 voc = generate_vocab(notes)
 notes_to_ix = {n: i for i, n in enumerate(voc)}
 ix_to_notes = {i: n for i, n in enumerate(voc)}
@@ -67,7 +67,7 @@ model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy
 m = X.shape[0]
 a0 = np.zeros((m, n_a))
 c0 = np.zeros((m, n_a))
-model.fit([X, a0, c0], list(Y), epochs=500)
+model.fit([X, a0, c0], list(Y), epochs=100)
 
 
 def one_hot(x):
@@ -146,4 +146,4 @@ def generate_music():
     return to_play
 
 
-generate_midi_file("maestro4.mid", generate_music())
+generate_midi_file("maestro6.mid", generate_music())
