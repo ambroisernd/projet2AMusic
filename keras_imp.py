@@ -29,7 +29,8 @@ n_values = len(ix_to_notes)
 print('Vectorization...')
 X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, Tx, m)
 
-print('Building Model')
+print('Building Model...')
 model = None
 
+print('Generating music...')
 generate_midi_file("keras1.mid", generate_music(model, ix_to_notes))
