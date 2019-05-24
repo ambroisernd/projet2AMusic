@@ -115,8 +115,8 @@ def predict_and_sample(inference_model, Ty, n_values):
     return results, indices
 
 
-def generate_music(model, ix_to_notes):
-    _, indices = predict_and_sample(model)
+def generate_music(model, ix_to_notes, note_to_generate, n_values):
+    _, indices = predict_and_sample(model, note_to_generate, n_values)
     to_play = []
     for x in indices:
         to_play.append(ix_to_notes[x])
