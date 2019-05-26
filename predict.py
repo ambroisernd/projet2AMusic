@@ -53,7 +53,7 @@ if __name__ == "__main__":
     Ty = 500
     output_path = 'generated_midi/eliseia.mid'
     weights_path = 'data/models/elise_500_epochs_50_note.h5'
-    notes_path = 'data/note/notes'
+    notes_path = 'data/_notes/notes'
     voc_path = 'data/vocabularies/my_midi_voc'
 
     generate_music()

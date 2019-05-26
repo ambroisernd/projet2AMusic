@@ -43,7 +43,7 @@ def generate_weights(X, Y, model):
 if __name__ == "__main__":
     # execute only if run as a script
     path_to_midi = 'training_data/e/*.mid'
-    notes_save_path = 'data/note/notes'
+    notes_save_path = 'data/_notes/notes'
     n_notes_before = 50
     epochs = 500
     batch_size = 64
