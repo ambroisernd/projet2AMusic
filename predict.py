@@ -24,11 +24,11 @@ def predict_and_sample_random(model, notes_to_ix):
     indices = []
     for i in range(Ty):
         X_in = np.reshape(X, (1, len(notes), 1))
-        pred = model.predict(X_in, verbose=1)
+        pred = model.predict(X_in, verbose=0)
         idx = np.random.choice([k for k in range(len(notes_to_ix))], p=pred.ravel())
         indices.append(idx)
         X.append(idx)
-        X = X.pop(0)
+        X = X[1:len(X)]
     return indices
 
 
