@@ -1,9 +1,8 @@
-import tensorflow
 from keras import Sequential
 from keras.layers import LSTM, Dense, Dropout, Activation
 
-from midi_utils import get_notes
-from preprocessing import generate_vocab, generate_X_Y_multi
+from utils.midi_utils import get_notes
+from utils.preprocessing import generate_vocab, generate_X_Y_multi
 
 
 def train_lstm():

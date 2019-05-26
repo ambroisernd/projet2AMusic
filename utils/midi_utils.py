@@ -1,7 +1,7 @@
 from music21 import *
 import glob
 
-from utils import RepresentsInt, parse_duration
+from utils.math_utils import RepresentsInt, parse_duration
 
 
 def get_notes(path_to_midi):
