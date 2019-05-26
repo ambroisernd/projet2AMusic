@@ -28,7 +28,7 @@ def predict_and_sample_random(model, notes_to_ix):
         idx = np.random.choice([k for k in range(len(notes_to_ix))], p=pred.ravel())
         indices.append(idx)
         X.append(idx)
-        X = X[1:len(X)]
+        X = X.pop(0)
     return indices
 
 
