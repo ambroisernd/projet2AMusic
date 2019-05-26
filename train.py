@@ -19,6 +19,7 @@ def train_lstm():
 
 
 def lstm(X, n_values):
+    """Build an LSTM RNN"""
     """TODO: Paul doit construire notre propre model"""
     model = Sequential()
     model.add(LSTM(
@@ -40,7 +41,8 @@ def lstm(X, n_values):
 
 
 def generate_weights(X, Y, model):
-    model.fit(X, Y, epochs=20, batch_size=32)
+    """save weights to weights_save_path"""
+    model.fit(X, Y, epochs=epochs, batch_size=batch_size)
     model.save(weights_save_path)
 
 
@@ -48,6 +50,8 @@ if __name__ == "__main__":
     # execute only if run as a script
     path_to_midi = 'training_data/e/*.mid'
     n_notes_before = 20
+    epochs = 20
+    batch_size = 32
     weights_save_path = 'data/models/my_lstm_model.h5'
     voc_save_path = 'data/vocabularies/my_midi_voc'
 

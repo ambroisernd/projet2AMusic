@@ -5,6 +5,7 @@ from utils.math_utils import *
 
 
 def generate_music():
+    """load the vocabulary and the model to create a midi file"""
     with open(voc_path, 'rb') as fp:
         voc = pickle.load(fp)
     notes_to_ix = {n: i for i, n in enumerate(voc)}
@@ -16,6 +17,7 @@ def generate_music():
 
 
 def predict_and_sample_random(model, notes_to_ix):
+    """generate n = n_notes_before random notes to predict the Ty-th following notes"""
     notes = []
 
     for x in range(n_notes_before):

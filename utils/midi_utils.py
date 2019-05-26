@@ -34,6 +34,7 @@ def get_notes(path_to_midi):
 
 
 def generate_midi_file(output_name, notes):
+    """parse notes using separators to generate midi file"""
     sheet = stream.Stream()
     for x in notes:
         if RepresentsInt(x[0]):
@@ -48,6 +49,7 @@ def generate_midi_file(output_name, notes):
 
 
 def generate_notes(indices, ix_to_notes):
+    """convert an indice array to a not array using vocabulary"""
     to_play = []
     for x in indices:
         to_play.append(ix_to_notes[x])

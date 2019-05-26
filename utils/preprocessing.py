@@ -25,6 +25,7 @@ def generate_X_Y_note_to_note(note_to_index, notes, Tx, m):
 
 
 def generate_X_Y_multi(notes_to_index, notes, n_notes):
+    """Generate vectors X and Y for training where X[i+n_notes]=Y[i]"""
     X = []
     Y = []
     for i in range(len(notes) - n_notes):
