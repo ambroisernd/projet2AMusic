@@ -47,7 +47,7 @@ def generate_weights(X, Y, model):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    path_to_midi = 'e/*.mid'
+    path_to_midi = 'training_data/e/*.mid'
     n_notes_before = 20
     weights_save_path = 'models/lstm_model.h5'
     voc_save_path = 'data/voc'
