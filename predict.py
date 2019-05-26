@@ -1,7 +1,10 @@
+import pickle
+import random
+import numpy as np
+
 from keras.engine.saving import load_model
 
 from utils.midi_utils import generate_notes, generate_midi_file
-from utils.math_utils import *
 
 
 def generate_music():
