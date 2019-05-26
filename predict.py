@@ -36,8 +36,8 @@ if __name__ == "__main__":
     # execute only if run as a script
     n_notes_before = 20
     Ty = 500
-    output_path = 'test1.mid'
-    weights_path = 'models/lstm_model.h5'
-    voc_path = 'data/voc'
+    output_path = 'generated_midi/test1.mid'
+    weights_path = 'data/models/my_lstm_model.h5'
+    voc_path = 'data/vocabularies/my_midi_voc'
 
     generate_music()
