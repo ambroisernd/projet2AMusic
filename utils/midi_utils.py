@@ -1,10 +1,12 @@
+import pickle
+
 from music21 import *
 import glob
 
 from utils.math_utils import RepresentsInt, parse_duration
 
 
-def get_notes(path_to_midi):
+def get_notes(path_to_midi, notes_save_path):
     """Parse notes from midifile"""
     notes = []
     instr_part = []
@@ -30,6 +32,9 @@ def get_notes(path_to_midi):
                 ch = '$'.join(str(n) for n in _note.normalOrder)
                 d = str(_note.duration)[:-1].split()[-1]
                 notes.append(ch + "$" + d)
+    with open(notes_save_path, 'wb') as f_path:
+        pickle.dump(notes, f_path)
+
     return notes
 
 

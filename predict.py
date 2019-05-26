@@ -20,15 +20,25 @@ def generate_music():
 
 
 def predict_and_sample_random(model, notes_to_ix):
+    with open(notes_path, 'rb') as fp:
+        notes = pickle.load(fp)
     """generate n = n_notes_before random notes to predict the Ty-th following notes"""
-    notes = []
+#   notes = []
 
-    for x in range(n_notes_before):
-        notes.append(random.randint(0, len(notes_to_ix)))
-    X = notes[:]
+#   for x in range(n_notes_before):
+#       notes.append(random.randint(0, len(notes_to_ix)))
+#   X = notes[:]
+    """-------------------------------------------------------------------------------"""
+    """pick n = n_notes_before  from input files to predict the Ty-th following notes"""
+    rnd = random.randint(0, len(notes)-random.randint(0, len(notes_to_ix)-1))
+    notes = notes[rnd:rnd + n_notes_before]
+    X = []
+    for n in notes:
+        X.append(notes_to_ix[n])
+    """-------------------------------------------------------------------------------"""
     indices = []
     for i in range(Ty):
-        X_in = np.reshape(X, (1, len(notes), 1))
+        X_in = np.reshape(X, (1, len(X), 1))
         pred = model.predict(X_in, verbose=0)
         idx = np.random.choice([k for k in range(len(notes_to_ix))], p=pred.ravel())
         indices.append(idx)
@@ -39,10 +49,11 @@ def predict_and_sample_random(model, notes_to_ix):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    n_notes_before = 20
+    n_notes_before = 50
     Ty = 500
-    output_path = 'generated_midi/test1.mid'
-    weights_path = 'data/models/my_lstm_model.h5'
+    output_path = 'generated_midi/eliseia.mid'
+    weights_path = 'data/models/elise_500_epochs_50_note.h5'
+    notes_path = 'data/note/notes'
     voc_path = 'data/vocabularies/my_midi_voc'
 
     generate_music()
