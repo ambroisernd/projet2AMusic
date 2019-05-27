@@ -1,4 +1,8 @@
+import pickle
+
 from keras import Sequential
+from keras.callbacks import ModelCheckpoint
+from keras.engine.saving import load_model
 from keras.layers import LSTM, Dense, Activation, CuDNNLSTM
 
 from utils.midi_utils import get_notes
@@ -6,14 +10,20 @@ from utils.preprocessing import generate_vocab, generate_X_Y_multi
 
 
 def train_lstm():
-    notes = get_notes(path_to_midi, notes_save_path)
+    if resume_model:
+        with open(notes_load_path, 'rb') as fp:
+            notes = pickle.load(fp)
+    else:
+        notes = get_notes(path_to_midi, notes_save_path)
     voc = generate_vocab(notes, voc_save_path)
     notes_to_ix = {n: i for i, n in enumerate(voc)}
     ix_to_notes = {i: n for i, n in enumerate(voc)}
     n_values = len(ix_to_notes)
     X, Y = generate_X_Y_multi(notes_to_ix, notes, n_notes_before)
-
-    model = lstm(X, n_values)
+    if resume_model:
+        model = load_model(weights_load_path)
+    else:
+        model = lstm(X, n_values)
 
     generate_weights(X, Y, model)
 
@@ -36,18 +46,24 @@ def lstm(X, n_values):
 
 def generate_weights(X, Y, model):
     """save weights to weights_save_path"""
-    model.fit(X, Y, epochs=epochs, batch_size=batch_size)
-    model.save(weights_save_path)
+    filepath = weights_save_path
+    checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=0, save_best_only=True, mode='min')
+    callbacks_list = [checkpoint]
+    model.fit(X, Y, epochs=epochs, callbacks=callbacks_list, batch_size=batch_size, verbose=2)
 
 
 if __name__ == "__main__":
     # execute only if run as a script
-    path_to_midi = 'training_data/test/*.midi'
+    path_to_midi = 'training_data/e/*.mid'
     notes_save_path = 'data/_notes/notes'
-    n_notes_before = 100
-    epochs = 200
-    batch_size = 512
-    weights_save_path = 'data/models/test.h5'
+    notes_load_path = 'data/_notes/notes'
+    n_notes_before = 20
+    epochs = 10000
+    batch_size = 12885
+    weights_save_path = 'data/models/my_model.h5'
+    weights_load_path = 'data/models/my_model.h5'
     voc_save_path = 'data/vocabularies/my_midi_voc'
+
+    resume_model = True
 
     train_lstm()
