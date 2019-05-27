@@ -63,7 +63,7 @@ if __name__ == "__main__":
     path_to_midi = 'training_data/e/*.mid'
     notes_save_path = 'data/_notes/notes'
     notes_load_path = 'data/_notes/notes'
-    n_notes_before = 500
+    n_notes_before = 100
     epochs = 1000
     batch_size = 2048
     weights_save_path = 'data/models/my_model.h5'

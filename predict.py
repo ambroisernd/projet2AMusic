@@ -50,7 +50,7 @@ def predict_and_sample_random(model, notes_to_ix):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    n_notes_before = 500
+    n_notes_before = 100
     Ty = 500
     output_path = 'generated_midi/test.mid'
     weights_path = 'data/models/my_model.h5'
