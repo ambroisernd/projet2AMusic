@@ -1,5 +1,5 @@
 from keras import Sequential
-from keras.layers import LSTM, Dense, Activation
+from keras.layers import LSTM, Dense, Activation, CuDNNLSTM
 
 from utils.midi_utils import get_notes
 from utils.preprocessing import generate_vocab, generate_X_Y_multi
@@ -22,7 +22,7 @@ def lstm(X, n_values):
     """Build an LSTM RNN"""
     """TODO: Paul doit construire notre propre model"""
     model = Sequential()
-    model.add(LSTM(
+    model.add(CuDNNLSTM(
         64,
         input_shape=(X.shape[1], X.shape[2]),
         return_sequences=False
@@ -42,12 +42,12 @@ def generate_weights(X, Y, model):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    path_to_midi = 'training_data/e/*.mid'
+    path_to_midi = 'training_data/test/*.midi'
     notes_save_path = 'data/_notes/notes'
-    n_notes_before = 50
-    epochs = 500
-    batch_size = 64
-    weights_save_path = 'data/models/elise_500_epochs_50_note.h5'
+    n_notes_before = 100
+    epochs = 200
+    batch_size = 512
+    weights_save_path = 'data/models/test.h5'
     voc_save_path = 'data/vocabularies/my_midi_voc'
 
     train_lstm()

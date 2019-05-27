@@ -34,6 +34,7 @@ def generate_X_Y_multi(notes_to_index, notes, n_notes):
         X.append([notes_to_index[c] for c in note_X])
         Y.append(notes_to_index[note_Y])
     X = np.reshape(X, (len(X), n_notes, 1))
+    X = X/float(len(notes_to_index))
     Y = to_categorical(Y)
     return X, Y
 
