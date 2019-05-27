@@ -1,5 +1,4 @@
 from __future__ import print_function
-import tensorflow as tf
 from pandas import DataFrame
 import numpy as np
 from utils import *
@@ -28,9 +27,19 @@ n_values = len(ix_to_notes)
 
 print('Vectorization...')
 X, Y = generate_X_Y_from_one_music(notes_to_ix, notes, Tx, m)
+X = X[0]
+print(X)
+print(np.shape(X))
+#Ici nous rentrerons X[0]
+
 
 print('Building Model...')
-model = None
+model = Sequential()
+model.add(Dense(32,activation='relu', input_dim=(Tx, n_values)))
+model.add(Dense(10, activation='softmax'))
+
+
+print('Training Model ...')
 
 print('Generating music...')
 generate_midi_file("output_song.mid", generate_music(model, ix_to_notes, note_to_generate, n_values))
