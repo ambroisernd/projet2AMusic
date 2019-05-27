@@ -40,7 +40,8 @@ def predict_and_sample_random(model, notes_to_ix):
     for i in range(Ty):
         X_in = np.reshape(X, (1, len(X), 1)) / float(len(notes_to_ix))
         pred = model.predict(X_in, verbose=0)
-        idx = np.random.choice([k for k in range(len(notes_to_ix))], p=pred.ravel())
+#        idx = np.random.choice([k for k in range(len(notes_to_ix))], p=pred.ravel())
+        idx = np.argmax(pred)
         indices.append(idx)
         X.append(idx)
         X = X[1:len(X)]
@@ -49,7 +50,7 @@ def predict_and_sample_random(model, notes_to_ix):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    n_notes_before = 100
+    n_notes_before = 500
     Ty = 500
     output_path = 'generated_midi/test.mid'
     weights_path = 'data/models/my_model.h5'
