@@ -41,7 +41,7 @@ def lstm(X, n_values):
     model.add(CuDNNLSTM(512, return_sequences=True))
     model.add(Dropout(0.3))
     model.add(CuDNNLSTM(512))
-    model.add(Dense(256))
+    model.add(Dense(512//2))
     model.add(Dropout(0.3))
     model.add(Dense(n_values))
     model.add(Activation('softmax'))
@@ -55,21 +55,21 @@ def generate_weights(X, Y, model):
     filepath = weights_save_path
     checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=0, save_best_only=True, mode='min')
     callbacks_list = [checkpoint]
-    model.fit(X, Y, epochs=epochs, callbacks=callbacks_list, batch_size=batch_size, verbose=2)
+    model.fit(X, Y, epochs=epochs, callbacks=callbacks_list, batch_size=batch_size, verbose=1)
 
 
 if __name__ == "__main__":
     # execute only if run as a script
-    path_to_midi = 'training_data/e/*.mid'
-    notes_save_path = 'data/_notes/notes'
-    notes_load_path = 'data/_notes/notes'
-    n_notes_before = 100
-    epochs = 1000
+    path_to_midi = 'training_data/easy/*.mid'
+    notes_save_path = 'data/_notes/easy'
+    notes_load_path = 'data/_notes/easy'
+    n_notes_before = 20
+    epochs = 10000
     batch_size = 2048
-    weights_save_path = 'data/models/my_model.h5'
-    weights_load_path = 'data/models/my_model.h5'
-    voc_save_path = 'data/vocabularies/my_midi_voc'
+    weights_save_path = 'data/models/easy.h5'
+    weights_load_path = 'data/models/easy.h5'
+    voc_save_path = 'data/vocabularies/easy'
 
-    resume_model = False
+    resume_model = True
 
     train_lstm()

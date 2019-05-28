@@ -23,11 +23,11 @@ def predict_and_sample_random(model, notes_to_ix):
     with open(notes_path, 'rb') as fp:
         notes = pickle.load(fp)
     """generate n = n_notes_before random notes to predict the Ty-th following notes"""
-#   notes = []
-
-#   for x in range(n_notes_before):
-#       notes.append(random.randint(0, len(notes_to_ix)))
-#   X = notes[:]
+    # notes = []
+    #
+    # for x in range(n_notes_before):
+    #     notes.append(random.randint(0, len(notes_to_ix)))
+    # X = notes[:]
     """-------------------------------------------------------------------------------"""
     """pick n = n_notes_before  from input files to predict the Ty-th following notes"""
     rnd = random.randint(0, len(notes)-random.randint(0, len(notes_to_ix)-1))
@@ -50,11 +50,11 @@ def predict_and_sample_random(model, notes_to_ix):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    n_notes_before = 100
+    n_notes_before = 20
     Ty = 500
-    output_path = 'generated_midi/test.mid'
-    weights_path = 'data/models/my_model.h5'
-    notes_path = 'data/_notes/notes'
-    voc_path = 'data/vocabularies/my_midi_voc'
+    output_path = 'generated_midi/easy_0_08_1.mid'
+    weights_path = 'data/models/easy.h5'
+    notes_path = 'data/_notes/easy'
+    voc_path = 'data/vocabularies/easy'
 
     generate_music()
