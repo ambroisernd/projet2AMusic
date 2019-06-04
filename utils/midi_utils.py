@@ -32,6 +32,10 @@ def get_notes(path_to_midi, notes_save_path):
                 ch = '$'.join(str(n) for n in _note.normalOrder)
                 d = str(_note.duration)[:-1].split()[-1]
                 notes.append(ch + "$" + d)
+            elif isinstance(_note, note.Rest):
+                d = str(_note.duration)[:-1].split()[-1]
+                notes.append('S'+" "+d)
+
     with open(notes_save_path, 'wb') as f_path:
         pickle.dump(notes, f_path)
 
@@ -45,6 +49,8 @@ def generate_midi_file(output_name, notes):
         if RepresentsInt(x[0]):
             ch = x.split("$")
             sheet.append(chord.Chord([int(k) for k in ch[:-1]], quarterLength=parse_duration(ch[-1])))
+        elif x[0] == 'S':
+            sheet.append(note.Rest(quarterLength=parse_duration(x.split()[-1])))
         else:
             sheet.append(note.Note(x.split()[0], quarterLength=parse_duration(x.split()[-1])))
     mf = midi.translate.streamToMidiFile(sheet)

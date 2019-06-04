@@ -70,6 +70,6 @@ if __name__ == "__main__":
     weights_load_path = 'data/models/easy.h5'
     voc_save_path = 'data/vocabularies/easy'
 
-    resume_model = True
+    resume_model = False
 
     train_lstm()
