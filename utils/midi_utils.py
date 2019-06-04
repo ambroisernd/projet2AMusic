@@ -20,6 +20,7 @@ def get_notes(path_to_midi, notes_save_path):
                 print(part)
                 if isinstance(part.getInstrument(), instr):
                     instr_part.append(part)
+                    print("adding : " + str(part))
         except:
             instr_part.append(midi.flat)
 

@@ -53,9 +53,9 @@ if __name__ == "__main__":
     # execute only if run as a script
     n_notes_before = 20
     Ty = 500
-    output_path = 'generated_midi/easy_0_08_1.mid'
-    weights_path = 'data/models/easy.h5'
-    notes_path = 'data/_notes/easy'
-    voc_path = 'data/vocabularies/easy'
+    output_path = 'generated_midi/easy_64.mid'
+    weights_path = 'data/models/easy_64.h5'
+    notes_path = 'data/_notes/easy_64'
+    voc_path = 'data/vocabularies/easy_64'
 
     generate_music()

@@ -61,15 +61,15 @@ def generate_weights(X, Y, model):
 if __name__ == "__main__":
     # execute only if run as a script
     path_to_midi = 'training_data/easy/*.mid'
-    notes_save_path = 'data/_notes/easy'
-    notes_load_path = 'data/_notes/easy'
+    notes_save_path = 'data/_notes/easy_64'
+    notes_load_path = 'data/_notes/easy_64'
     n_notes_before = 20
     epochs = 10000
     batch_size = 64
-    weights_save_path = 'data/models/easy.h5'
-    weights_load_path = 'data/models/easy.h5'
-    voc_save_path = 'data/vocabularies/easy'
+    weights_save_path = 'data/models/easy_64.h5'
+    weights_load_path = 'data/models/easy_64.h5'
+    voc_save_path = 'data/vocabularies/easy_64'
 
-    resume_model = False
+    resume_model = True
 
     train_lstm()
