@@ -65,7 +65,7 @@ if __name__ == "__main__":
     notes_load_path = 'data/_notes/easy'
     n_notes_before = 20
     epochs = 10000
-    batch_size = 2048
+    batch_size = 64
     weights_save_path = 'data/models/easy.h5'
     weights_load_path = 'data/models/easy.h5'
     voc_save_path = 'data/vocabularies/easy'
