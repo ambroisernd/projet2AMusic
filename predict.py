@@ -31,7 +31,6 @@ def predict_and_sample_random(model, notes_to_ix):
     """-------------------------------------------------------------------------------"""
     """pick n = n_notes_before  from input files to predict the Ty-th following notes"""
     rnd = random.randint(0, len(notes)-random.randint(0, len(notes_to_ix)-1))
-    rnd = 0
     notes = notes[rnd:rnd + n_notes_before]
     X = []
     for n in notes:
