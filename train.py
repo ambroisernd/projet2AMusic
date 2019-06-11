@@ -30,7 +30,6 @@ def train_lstm():
 
 def lstm(X, n_values):
     """Build an LSTM RNN"""
-    """TODO: Paul doit construire notre propre model"""
     model = Sequential()
     model.add(CuDNNLSTM(
         512,
