@@ -30,7 +30,7 @@ def predict_and_sample_random(model, notes_to_ix):
     # X = notes[:]
     """-------------------------------------------------------------------------------"""
     """pick n = n_notes_before  from input files to predict the Ty-th following notes"""
-    rnd = random.randint(0, len(notes)-random.randint(0, len(notes_to_ix)-1))
+    rnd = random.randint(0, len(notes) - random.randint(0, len(notes_to_ix) - 1))
     notes = notes[rnd:rnd + n_notes_before]
     X = []
     for n in notes:
@@ -40,7 +40,7 @@ def predict_and_sample_random(model, notes_to_ix):
     for i in range(Ty):
         X_in = np.reshape(X, (1, len(X), 1)) / float(len(notes_to_ix))
         pred = model.predict(X_in, verbose=0)
-#        idx = np.random.choice([k for k in range(len(notes_to_ix))], p=pred.ravel())
+        #        idx = np.random.choice([k for k in range(len(notes_to_ix))], p=pred.ravel())
         idx = np.argmax(pred)
         indices.append(idx)
         X.append(idx)
@@ -50,11 +50,11 @@ def predict_and_sample_random(model, notes_to_ix):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    n_notes_before = 20 # must be the same as train.py
-    Ty = 500 # notes to generate
-    output_path = 'generated_midi/easy_64.mid' # midi output path and file name
-    weights_path = 'data/models/easy_64.h5' # file path to load model weights
-    notes_path = 'data/_notes/easy_64' # file path to load notes previously parsed in train.py
-    voc_path = 'data/vocabularies/easy_64' # file path to load vocabulary created in train.py
+    n_notes_before = 20  # must be the same as train.py
+    Ty = 500  # notes to generate
+    output_path = 'generated_midi/easy_64.mid'  # midi output path and file name
+    weights_path = 'data/models/easy_64.h5'  # file path to load model weights
+    notes_path = 'data/_notes/easy_64'  # file path to load notes previously parsed in train.py
+    voc_path = 'data/vocabularies/easy_64'  # file path to load vocabulary created in train.py
 
     generate_music()
