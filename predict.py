@@ -50,11 +50,11 @@ def predict_and_sample_random(model, notes_to_ix):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    n_notes_before = 20
-    Ty = 500
-    output_path = 'generated_midi/easy_64.mid'
-    weights_path = 'data/models/easy_64.h5'
-    notes_path = 'data/_notes/easy_64'
-    voc_path = 'data/vocabularies/easy_64'
+    n_notes_before = 20 # must be the same as train.py
+    Ty = 500 # notes to generate
+    output_path = 'generated_midi/easy_64.mid' # midi output path and file name
+    weights_path = 'data/models/easy_64.h5' # file path to load model weights
+    notes_path = 'data/_notes/easy_64' # file path to load notes previously parsed in train.py
+    voc_path = 'data/vocabularies/easy_64' # file path to load vocabulary created in train.py
 
     generate_music()

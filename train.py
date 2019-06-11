@@ -40,7 +40,7 @@ def lstm(X, n_values):
     model.add(CuDNNLSTM(512, return_sequences=True))
     model.add(Dropout(0.3))
     model.add(CuDNNLSTM(512))
-    model.add(Dense(512//2))
+    model.add(Dense(512 // 2))
     model.add(Dropout(0.3))
     model.add(Dense(n_values))
     model.add(Activation('softmax'))
@@ -59,16 +59,16 @@ def generate_weights(X, Y, model):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    path_to_midi = 'training_data/easy/*.mid'
-    notes_save_path = 'data/_notes/easy_64'
-    notes_load_path = 'data/_notes/easy_64'
-    n_notes_before = 20
+    path_to_midi = 'training_data/easy/*.mid'  # path to input midi files
+    notes_save_path = 'data/_notes/easy_64'  # file path to save notes parsed from input midi files
+    notes_load_path = 'data/_notes/easy_64' # file path to load notes previously parsed to resume training
+    n_notes_before = 20 # sequence length
     epochs = 10000
     batch_size = 64
-    weights_save_path = 'data/models/easy_64.h5'
-    weights_load_path = 'data/models/easy_64.h5'
-    voc_save_path = 'data/vocabularies/easy_64'
+    weights_save_path = 'data/models/easy_64.h5' # file path to save model weights
+    weights_load_path = 'data/models/easy_64.h5' # file path to load model weights
+    voc_save_path = 'data/vocabularies/easy_64' # path to save vocabulary, can be used in predict.py
 
-    resume_model = True
+    resume_model = True # resume training : True / override and start new training : False
 
     train_lstm()
