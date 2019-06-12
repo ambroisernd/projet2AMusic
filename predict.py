@@ -4,19 +4,20 @@ import numpy as np
 
 from keras.engine.saving import load_model
 
-from utils.midi_utils import generate_notes, generate_midi_file
+from utils.midi_utils import *
+from utils.preprocessing import *
 
 
 def generate_music():
     """load the vocabulary and the model to create a midi file"""
-    with open(voc_path, 'rb') as fp:
-        voc = pickle.load(fp)
+    # with open(voc_path, 'rb') as fp:
+    #     voc = pickle.load(fp)
+    voc = create_vocab_array()
     notes_to_ix = {n: i for i, n in enumerate(voc)}
     ix_to_notes = {i: n for i, n in enumerate(voc)}
     model = load_model(weights_path)
-    generated_indices = predict_and_sample_random(model, notes_to_ix)
-    to_play = generate_notes(generated_indices, ix_to_notes)
-    generate_midi_file(output_path, to_play)
+    prediction = predict_and_sample_random(model, notes_to_ix)
+    generate_midi_from_one_hots(output_path, prediction, ix_to_notes)
 
 
 def predict_and_sample_random(model, notes_to_ix):
@@ -34,27 +35,38 @@ def predict_and_sample_random(model, notes_to_ix):
     notes = notes[rnd:rnd + n_notes_before]
     X = []
     for n in notes:
-        X.append(notes_to_ix[n])
+        X.append(note_to_one_hot(n, notes_to_ix))
     """-------------------------------------------------------------------------------"""
-    indices = []
+    one_hots = []
     for i in range(Ty):
-        X_in = np.reshape(X, (1, len(X), 1)) / float(len(notes_to_ix))
-        pred = model.predict(X_in, verbose=0)
-        #        idx = np.random.choice([k for k in range(len(notes_to_ix))], p=pred.ravel())
-        idx = np.argmax(pred)
-        indices.append(idx)
-        X.append(idx)
+        X_in = np.reshape(np.array(X), (1, len(X), len(notes_to_ix)))
+        pred = model.predict(X_in, verbose=1)
+        note_type = np.argmax(pred[0][:5]) + 0
+        note_value = []
+        if note_type != 0:
+            for i in range(note_type):
+                max = np.argmax(pred[0][5:124]) + 5
+                note_value.append(max)
+                pred[0][max] = 0
+        note_duration = np.argmax(pred[0][124:]) + 124
+        Y = [0 for i in range(len(notes_to_ix))]
+        Y[note_type] = 1
+        Y[note_duration] = 1
+        for x in note_value:
+            Y[x] = 1
+        one_hots.append(Y)
+        X.append(Y)
         X = X[1:len(X)]
-    return indices
+    return one_hots
 
 
 if __name__ == "__main__":
     # execute only if run as a script
     n_notes_before = 20  # must be the same as train.py
     Ty = 500  # notes to generate
-    output_path = 'generated_midi/easy_64.mid'  # midi output path and file name
-    weights_path = 'data/models/easy_64.h5'  # file path to load model weights
-    notes_path = 'data/_notes/easy_64'  # file path to load notes previously parsed in train.py
-    voc_path = 'data/vocabularies/easy_64'  # file path to load vocabulary created in train.py
+    output_path = 'generated_midi/onehot.mid'  # midi output path and file name
+    weights_path = 'data/models/onehot.h5'  # file path to load model weights
+    notes_path = 'data/_notes/onehot'  # file path to load notes previously parsed in train.py
+    voc_path = 'data/vocabularies/onehot'  # file path to load vocabulary created in train.py
 
     generate_music()

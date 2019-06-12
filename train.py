@@ -5,8 +5,8 @@ from keras.callbacks import ModelCheckpoint
 from keras.engine.saving import load_model
 from keras.layers import LSTM, Dense, Activation, CuDNNLSTM, Dropout
 
-from utils.midi_utils import get_notes
-from utils.preprocessing import generate_vocab, generate_X_Y_multi
+from utils.midi_utils import get_notes, create_vocab_array
+from utils.preprocessing import generate_vocab, generate_X_Y_multi, generate_X_Y_one_hot
 
 
 def train_lstm():
@@ -15,11 +15,11 @@ def train_lstm():
             notes = pickle.load(fp)
     else:
         notes = get_notes(path_to_midi, notes_save_path)
-    voc = generate_vocab(notes, voc_save_path)
+    voc = create_vocab_array()
     notes_to_ix = {n: i for i, n in enumerate(voc)}
     ix_to_notes = {i: n for i, n in enumerate(voc)}
     n_values = len(ix_to_notes)
-    X, Y = generate_X_Y_multi(notes_to_ix, notes, n_notes_before)
+    X, Y = generate_X_Y_one_hot(notes_to_ix, notes, n_notes_before)
     if resume_model:
         model = load_model(weights_load_path)
     else:
@@ -59,15 +59,15 @@ def generate_weights(X, Y, model):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    path_to_midi = 'training_data/easy/*.mid'  # path to input midi files
-    notes_save_path = 'data/_notes/easy_64'  # file path to save notes parsed from input midi files
-    notes_load_path = 'data/_notes/easy_64'  # file path to load notes previously parsed to resume training
+    path_to_midi = 'training_data/e/*.mid'  # path to input midi files
+    notes_save_path = 'data/_notes/onehot'  # file path to save notes parsed from input midi files
+    notes_load_path = 'data/_notes/onehot'  # file path to load notes previously parsed to resume training
     n_notes_before = 20  # sequence length
     epochs = 10000
     batch_size = 64
-    weights_save_path = 'data/models/easy_64.h5'  # file path to save model weights
-    weights_load_path = 'data/models/easy_64.h5'  # file path to load model weights
-    voc_save_path = 'data/vocabularies/easy_64'  # path to save vocabulary, can be used in predict.py
+    weights_save_path = 'data/models/onehot.h5'  # file path to save model weights
+    weights_load_path = 'data/models/onehot.h5'  # file path to load model weights
+    voc_save_path = 'data/vocabularies/onehot'  # path to save vocabulary, can be used in predict.py
 
     resume_model = True  # resume training : True / override and start new training : False
 
