@@ -39,11 +39,14 @@ def predict_and_sample_random(model, notes_to_ix):
     """Choose your n_notes before"""
     notes = []
     for i in range(n_notes_before):
-        print(str(notes_to_ix-i)+" notes or chord to choose")
+        print(str(n_notes_before-i)+" notes or chord to choose")
         notes.append(choose_notes(notes_to_ix))
-    X=notes
+    X=notes[:]
+    print(X)
     """-------------------------------------------------------------------------------"""
     indices = []
+    for i in X:
+        indices.append(i)
     for i in range(Ty):
         X_in = np.reshape(X, (1, len(X), 1)) / float(len(notes_to_ix))
         pred = model.predict(X_in, verbose=0)
@@ -60,7 +63,7 @@ if __name__ == "__main__":
     n_notes_before = 20  # must be the same as train.py
     Ty = 500  # notes to generate
     output_path = 'generated_midi/easychoose_64.mid'  # midi output path and file name
-    weights_path = 'data/models/easy_64.h5'  # file path to load model weights
+    weights_path = 'data/models/easy_64#2100epochs.h5'  # file path to load model weights
     notes_path = 'data/_notes/easy_64'  # file path to load notes previously parsed in train.py
     voc_path = 'data/vocabularies/easy_64'  # file path to load vocabulary created in train.py
 

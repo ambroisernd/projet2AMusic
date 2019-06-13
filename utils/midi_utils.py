@@ -70,7 +70,7 @@ def generate_notes(indices, ix_to_notes):
 def choose_notes(notes_to_ix):
     print(notes_to_ix)
     print("choose the indice of the note or the chord you want")
-    indice = input()
+    indice = int(input())
     return indice
 
 #voc_path = "../data/vocabularies/easy_64"
