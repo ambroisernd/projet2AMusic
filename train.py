@@ -59,7 +59,7 @@ def generate_weights(X, Y, model):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    path_to_midi = 'training_data/e/*.mid'  # path to input midi files
+    path_to_midi = 'training_data/easy/*.mid'  # path to input midi files
     notes_save_path = 'data/_notes/onehoteasy'  # file path to save notes parsed from input midi files
     notes_load_path = 'data/_notes/onehoteasy'  # file path to load notes previously parsed to resume training
     n_notes_before = 20  # sequence length

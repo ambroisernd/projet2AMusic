@@ -4,7 +4,8 @@ from music21 import *
 import glob
 
 from utils.math_utils import RepresentsInt, parse_duration
-from utils.preprocessing import note_to_one_hot
+from utils.preprocessing import note_to_one_hot, one_hot
+import random as random
 
 
 def get_notes(path_to_midi, notes_save_path):
@@ -60,7 +61,7 @@ def create_vocab_array():
         for x in notes:
             piano_notes.append(x + str(i))
     piano_notes = piano_notes[1:-11]
-    vocab = piano_notes + no_dot_duration
+    vocab = vocab + piano_notes + no_dot_duration
 
     for x in no_dot_duration:
         if x != 0:
@@ -146,16 +147,28 @@ def generate_midi_from_one_hots(output_name, one_hots, ix_to_notes):
 
 def choose_notes(notes_to_ix):
     print("Choose the indice of the type you want : ")
-    print(notes_to_ix[:5])
+    print(notes_to_ix)
     type_note = int(input())
     notes = [type_note]
     for i in range(type_note):
         print("Choose the indice of the note you want : ")
-        print(notes_to_ix[5:124])
+        print(notes_to_ix)
         n = int(input())
         notes.append(n)
     print("Choose the indice of the time you want : ")
-    print(notes_to_ix[124:])
+    print(notes_to_ix)
     time_note = int(input())
     notes.append(time_note)
-    return note_to_one_hot(notes, notes_to_ix)
+    return one_hot(notes, notes_to_ix)
+
+def choose_random_note(notes_to_ix):
+    type_note = random.randint(0, 4)
+    notes=[type_note]
+    for i in range(type_note):
+        n = random.randint(5,  128)
+        while n in notes:
+            n = random.randint(5, 128)
+        notes.append(n)
+    duree = random.randint(133, 136)
+    notes.append(duree)
+    return one_hot(notes, notes_to_ix)
