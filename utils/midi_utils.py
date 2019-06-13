@@ -133,3 +133,20 @@ def generate_midi_from_one_hots(output_name, one_hots, ix_to_notes):
     mf.open(output_name, "wb")
     mf.write()
     mf.close()
+
+
+def choose_notes(notes_to_ix):
+    print("Choose the indice of the type you want : ")
+    print(notes_to_ix[:5])
+    type_note = int(input())
+    notes = [type_note]
+    for i in range(type_note):
+        print("Choose the indice of the note you want : ")
+        print(notes_to_ix[5:124])
+        n = int(input())
+        notes.append(n)
+    print("Choose the indice of the time you want : ")
+    print(notes_to_ix[124:])
+    time_note = int(input())
+    notes.append(time_note)
+    return note_to_one_hot(notes, notes_to_ix)
