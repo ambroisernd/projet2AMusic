@@ -37,6 +37,10 @@ def predict_and_sample_random(model, notes_to_ix):
     for n in notes:
         X.append(note_to_one_hot(n, notes_to_ix))
     """-------------------------------------------------------------------------------"""
+
+
+
+    """-------------------------------------------------------------------------------"""
     one_hots = []
     for i in range(Ty):
         X_in = np.reshape(np.array(X), (1, len(X), len(notes_to_ix)))
