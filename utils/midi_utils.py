@@ -74,6 +74,15 @@ def create_vocab_array():
     vocab.append(1 / 3)
     vocab.append(2 / 3)
     vocab.append(4 / 3)
+    vocab.append(1.25)
+    vocab.append(5.0)
+    vocab.append(2.25)
+    vocab.append(2.5)
+    vocab.append(7/3)
+    vocab.append(8/3)
+    vocab.append(3.25)
+    vocab.append(4.25)
+    vocab.append(4.5)
     return vocab
 
 

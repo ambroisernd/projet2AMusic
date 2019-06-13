@@ -55,24 +55,29 @@ def generate_X_Y_one_hot(notes_to_index, notes, n_notes):
 
 def note_to_one_hot(note, notes_to_index):
     X = []
-    if '$' in note:
-        ch = note.split("$")
-        notes = ch[:-1]
-        duration = parse_duration(ch[-1])
-        X.append(len(notes))
-        for c in notes:
-            X.append(notes_to_index[c])
-        X.append(notes_to_index[duration])
-    elif note[0] == 'S':
-        duration = parse_duration(note.split()[-1])
-        X.append(0)
-        X.append(notes_to_index[duration])
-    else:
-        notes = note.split()[0]
-        duration = parse_duration(note.split()[-1])
-        X.append(1)
-        X.append(notes_to_index[notes])
-        X.append(notes_to_index[duration])
+    problem = []
+    try:
+        if '$' in note:
+            ch = note.split("$")
+            notes = ch[:-1]
+            duration = parse_duration(ch[-1])
+            X.append(len(notes))
+            for c in notes:
+                X.append(notes_to_index[c])
+            X.append(notes_to_index[duration])
+        elif note[0] == 'S':
+            duration = parse_duration(note.split()[-1])
+            X.append(0)
+            X.append(notes_to_index[duration])
+        else:
+            notes = note.split()[0]
+            duration = parse_duration(note.split()[-1])
+            X.append(1)
+            X.append(notes_to_index[notes])
+            X.append(notes_to_index[duration])
+    except:
+        problem.append(duration)
+        print(problem)
 
     return one_hot(X, notes_to_index)
 
