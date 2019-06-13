@@ -64,9 +64,9 @@ if __name__ == "__main__":
     # execute only if run as a script
     n_notes_before = 20  # must be the same as train.py
     Ty = 500  # notes to generate
-    output_path = 'generated_midi/onehot.mid'  # midi output path and file name
-    weights_path = 'data/models/onehot.h5'  # file path to load model weights
-    notes_path = 'data/_notes/onehot'  # file path to load notes previously parsed in train.py
-    voc_path = 'data/vocabularies/onehot'  # file path to load vocabulary created in train.py
+    output_path = 'generated_midi/onehoteasy5.mid'  # midi output path and file name
+    weights_path = 'data/models/onehoteasy.h5'  # file path to load model weights
+    notes_path = 'data/_notes/onehoteasy'  # file path to load notes previously parsed in train.py
+    voc_path = 'data/vocabularies/onehoteasy'  # file path to load vocabulary created in train.py
 
     generate_music()

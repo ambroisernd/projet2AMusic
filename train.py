@@ -60,14 +60,14 @@ def generate_weights(X, Y, model):
 if __name__ == "__main__":
     # execute only if run as a script
     path_to_midi = 'training_data/e/*.mid'  # path to input midi files
-    notes_save_path = 'data/_notes/onehot'  # file path to save notes parsed from input midi files
-    notes_load_path = 'data/_notes/onehot'  # file path to load notes previously parsed to resume training
+    notes_save_path = 'data/_notes/onehoteasy'  # file path to save notes parsed from input midi files
+    notes_load_path = 'data/_notes/onehoteasy'  # file path to load notes previously parsed to resume training
     n_notes_before = 20  # sequence length
     epochs = 10000
     batch_size = 64
-    weights_save_path = 'data/models/onehot.h5'  # file path to save model weights
-    weights_load_path = 'data/models/onehot.h5'  # file path to load model weights
-    voc_save_path = 'data/vocabularies/onehot'  # path to save vocabulary, can be used in predict.py
+    weights_save_path = 'data/models/onehoteasy.h5'  # file path to save model weights
+    weights_load_path = 'data/models/onehoteasy.h5'  # file path to load model weights
+    voc_save_path = 'data/vocabularies/onehoteasy'  # path to save vocabulary, can be used in predict.py
 
     resume_model = True  # resume training : True / override and start new training : False
 
