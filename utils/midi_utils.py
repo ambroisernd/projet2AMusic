@@ -66,3 +66,15 @@ def generate_notes(indices, ix_to_notes):
     for x in indices:
         to_play.append(ix_to_notes[x])
     return to_play
+
+def choose_notes(notes_to_ix):
+    print(notes_to_ix)
+    print("choose the indice of the note or the chord you want")
+    indice = input()
+    return indice
+
+#voc_path = "../data/vocabularies/easy_64"
+#with open(voc_path, 'rb') as fp:
+#    voc = pickle.load(fp)
+#notes_to_ix = {n: i for i, n in enumerate(voc)}
+#choose_notes(notes_to_ix)

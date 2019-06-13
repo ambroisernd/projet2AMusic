@@ -4,7 +4,7 @@ import numpy as np
 
 from keras.engine.saving import load_model
 
-from utils.midi_utils import generate_notes, generate_midi_file
+from utils.midi_utils import generate_notes, generate_midi_file, choose_notes
 
 
 def generate_music():
@@ -30,11 +30,18 @@ def predict_and_sample_random(model, notes_to_ix):
     # X = notes[:]
     """-------------------------------------------------------------------------------"""
     """pick n = n_notes_before  from input files to predict the Ty-th following notes"""
-    rnd = random.randint(0, len(notes) - random.randint(0, len(notes_to_ix) - 1))
-    notes = notes[rnd:rnd + n_notes_before]
-    X = []
-    for n in notes:
-        X.append(notes_to_ix[n])
+    #rnd = random.randint(0, len(notes) - random.randint(0, len(notes_to_ix) - 1))
+    #notes = notes[rnd:rnd + n_notes_before]
+    #X = []
+    #for n in notes:
+    #    X.append(notes_to_ix[n])
+    """-------------------------------------------------------------------------------"""
+    """Choose your n_notes before"""
+    notes = []
+    for i in range(n_notes_before):
+        print(str(notes_to_ix-i)+" notes or chord to choose")
+        notes.append(choose_notes(notes_to_ix))
+    X=notes
     """-------------------------------------------------------------------------------"""
     indices = []
     for i in range(Ty):
