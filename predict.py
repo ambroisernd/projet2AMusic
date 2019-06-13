@@ -21,6 +21,7 @@ def generate_music():
 
 
 def predict_and_sample_random(model, notes_to_ix):
+    print(notes_to_ix)
     with open(notes_path, 'rb') as fp:
         notes = pickle.load(fp)
     """generate n = n_notes_before random notes to predict the Ty-th following notes"""
@@ -31,16 +32,16 @@ def predict_and_sample_random(model, notes_to_ix):
     # X = notes[:]
     """-------------------------------------------------------------------------------"""
     """pick n = n_notes_before  from input files to predict the Ty-th following notes"""
-    rnd = random.randint(0, len(notes) - random.randint(0, len(notes_to_ix) - 1))
-    notes = notes[rnd:rnd + n_notes_before]
-    X = []
-    for n in notes:
-        X.append(note_to_one_hot(n, notes_to_ix))
+    # rnd = random.randint(0, len(notes) - random.randint(0, len(notes_to_ix) - 1))
+    # notes = notes[rnd:rnd + n_notes_before]
+    # X = []
+    # for n in notes:
+    #     X.append(note_to_one_hot(n, notes_to_ix))
     """-------------------------------------------------------------------------------"""
     """Choose your n_notes before"""
     notes = []
     for i in range(n_notes_before):
-        print(str(notes_to_ix-i)+" notes or chord to choose")
+        print(str(n_notes_before-i)+" notes or chord to choose")
         notes.append(choose_notes(notes_to_ix))
     X=notes[:]
     """-------------------------------------------------------------------------------"""
