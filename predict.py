@@ -25,11 +25,11 @@ def predict_and_sample_random(model, notes_to_ix):
     with open(notes_path, 'rb') as fp:
         notes = pickle.load(fp)
     """generate n = n_notes_before random notes to predict the Ty-th following notes"""
-    notes = []
-
-    for x in range(n_notes_before):
-        notes.append(choose_random_note(notes_to_ix))
-    X = notes[:]
+    # notes = []
+    #
+    # for x in range(n_notes_before):
+    #     notes.append(choose_random_note(notes_to_ix))
+    # X = notes[:]
     """-------------------------------------------------------------------------------"""
     """pick n = n_notes_before  from input files to predict the Ty-th following notes"""
     # rnd = random.randint(0, len(notes) - random.randint(0, len(notes_to_ix) - 1))
@@ -44,6 +44,11 @@ def predict_and_sample_random(model, notes_to_ix):
     #     print(str(n_notes_before-i)+" notes or chord to choose")
     #     notes.append(choose_notes(notes_to_ix))
     # X=notes[:]
+    """-------------------------------------------------------------------------------"""
+    """Enter a midi, and the ia will continue the music"""
+    notes = get_notes(midi_path_to_continue, 'midiToContinue/for_test')
+    (a,b) = generate_X_Y_one_hot(notes_to_ix, notes, n_notes_before)
+    X=a
     """-------------------------------------------------------------------------------"""
     one_hots = X[:]
     for i in range(Ty):
@@ -76,5 +81,6 @@ if __name__ == "__main__":
     weights_path = 'data/models/onehoteasy.h5'  # file path to load model weights
     notes_path = 'data/_notes/onehoteasy'  # file path to load notes previously parsed in train.py
     voc_path = 'data/vocabularies/onehoteasy'  # file path to load vocabulary created in train.py
+    midi_path_to_continue = 'midiToContinue/riff.mid'
 
     generate_music()
