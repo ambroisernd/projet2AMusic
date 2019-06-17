@@ -16,3 +16,8 @@ weights_path = 'data/models/onehoteasy.h5'  # file path to load model weights
 notes_path = 'data/_notes/onehoteasy'  # file path to load notes previously parsed in train.py
 midi_path_to_continue = 'midiToContinue/riff.mid'
 Ty = 500  # notes to generate
+
+random_notes = False
+pick_from_training_data = False
+choose_n_notes_before = False
+continue_midi_file = True
