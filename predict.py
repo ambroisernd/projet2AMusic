@@ -47,8 +47,12 @@ def predict_and_sample_random(model, notes_to_ix):
     """-------------------------------------------------------------------------------"""
     """Enter a midi, and the ia will continue the music"""
     notes = get_notes(midi_path_to_continue, 'midiToContinue/for_test')
-    (a,b) = generate_X_Y_one_hot(notes_to_ix, notes, n_notes_before)
-    X=a
+    X=[]
+    for note in notes:
+        n = note_to_one_hot(note, notes_to_ix)
+        X.append(n)
+    X=X[-20:]
+    print(len(X))
     """-------------------------------------------------------------------------------"""
     one_hots = X[:]
     for i in range(Ty):
