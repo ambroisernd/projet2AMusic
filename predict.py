@@ -6,12 +6,11 @@ from keras.engine.saving import load_model
 
 from utils.midi_utils import *
 from utils.preprocessing import *
+from settings import *
 
 
 def generate_music():
     """load the vocabulary and the model to create a midi file"""
-    # with open(voc_path, 'rb') as fp:
-    #     voc = pickle.load(fp)
     voc = create_vocab_array()
     notes_to_ix = {n: i for i, n in enumerate(voc)}
     ix_to_notes = {i: n for i, n in enumerate(voc)}
@@ -79,12 +78,4 @@ def predict_and_sample_random(model, notes_to_ix):
 
 if __name__ == "__main__":
     # execute only if run as a script
-    n_notes_before = 20  # must be the same as train.py
-    Ty = 500  # notes to generate
-    output_path = 'generated_midi/onehoteasy5.mid'  # midi output path and file name
-    weights_path = 'data/models/onehoteasy.h5'  # file path to load model weights
-    notes_path = 'data/_notes/onehoteasy'  # file path to load notes previously parsed in train.py
-    voc_path = 'data/vocabularies/onehoteasy'  # file path to load vocabulary created in train.py
-    midi_path_to_continue = 'midiToContinue/riff.mid'
-
     generate_music()
