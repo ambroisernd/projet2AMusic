@@ -7,6 +7,9 @@ from keras.layers import LSTM, Dense, Activation, CuDNNLSTM, Dropout
 
 from utils.midi_utils import get_notes, create_vocab_array
 from utils.preprocessing import generate_vocab, generate_X_Y_multi, generate_X_Y_one_hot
+from utils.preprocessing import pb
+from utils.math_utils import unique
+import numpy as np
 from settings import *
 
 
@@ -21,6 +24,10 @@ def train_lstm():
     ix_to_notes = {i: n for i, n in enumerate(voc)}
     n_values = len(ix_to_notes)
     X, Y = generate_X_Y_one_hot(notes_to_ix, notes, n_notes_before)
+    #print(pb)
+    #print({n: i for i, n in enumerate(pb)})
+    #print(enumerate(pb))
+    print(unique(pb))
     if resume_model:
         model = load_model(weights_load_path)
     else:

@@ -8,7 +8,6 @@ from utils.midi_utils import *
 from utils.preprocessing import *
 from settings import *
 
-
 def generate_music():
     """load the vocabulary and the model to create a midi file"""
     voc = create_vocab_array()
@@ -54,7 +53,7 @@ def predict_and_sample_random(model, notes_to_ix):
         for note in notes:
             n = note_to_one_hot(note, notes_to_ix)
             X.append(n)
-        X = X[-20:]
+        X = X[-n_notes_before:]
     """-------------------------------------------------------------------------------"""
     one_hots = X[:]
     for i in range(Ty):

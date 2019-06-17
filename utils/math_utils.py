@@ -13,3 +13,10 @@ def RepresentsInt(s):
         return True
     except ValueError:
         return False
+
+def unique(l):
+    t = []
+    for i in l:
+        if i not in t:
+            t.append(i)
+    return t

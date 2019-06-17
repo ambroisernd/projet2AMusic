@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 from keras.utils import to_categorical
 from utils.math_utils import RepresentsInt, parse_duration
-
+pb  = []
 
 def generate_X_Y_note_to_note(note_to_index, notes, Tx, m):
     """Generate vectors X and Y for training where X[i+1]=Y[i]"""
@@ -64,6 +64,7 @@ def note_to_one_hot(note, notes_to_index):
             X.append(len(notes))
             for c in notes:
                 X.append(notes_to_index[c])
+
             X.append(notes_to_index[duration])
         elif note[0] == 'S':
             duration = parse_duration(note.split()[-1])
@@ -75,9 +76,9 @@ def note_to_one_hot(note, notes_to_index):
             X.append(1)
             X.append(notes_to_index[notes])
             X.append(notes_to_index[duration])
-    except:
-        problem.append(duration)
-        print(problem)
+    except Exception as e:
+        pb.append(duration)
+        print(e)
 
     return one_hot(X, notes_to_index)
 
