@@ -22,31 +22,31 @@ def predict_and_sample_random(model, notes_to_ix):
     print(notes_to_ix)
     with open(notes_path, 'rb') as fp:
         notes = pickle.load(fp)
-    """generate n = n_notes_before random notes to predict the Ty-th following notes"""
+    # generate n = n_notes_before random notes to predict the Ty-th following notes
     if random_notes:
         notes = []
 
         for x in range(n_notes_before):
             notes.append(choose_random_note(notes_to_ix))
         X = notes[:]
-    """-------------------------------------------------------------------------------"""
-    """pick n = n_notes_before  from input files to predict the Ty-th following notes"""
+        
+    # pick n = n_notes_before  from input files to predict the Ty-th following notes
     if pick_from_training_data:
         rnd = random.randint(0, len(notes) - random.randint(0, len(notes_to_ix) - 1))
         notes = notes[rnd:rnd + n_notes_before]
         X = []
         for n in notes:
             X.append(note_to_one_hot(n, notes_to_ix))
-    """-------------------------------------------------------------------------------"""
-    """Choose your n_notes before"""
+
+    # Choose your n_notes before
     if choose_n_notes_before:
         notes = []
         for i in range(n_notes_before):
             print(str(n_notes_before - i) + " notes or chord to choose")
             notes.append(choose_notes(notes_to_ix))
         X = notes[:]
-    """-------------------------------------------------------------------------------"""
-    """Enter a midi, and the ia will continue the music"""
+
+    # Enter a midi, and the ia will continue the music
     if continue_midi_file:
         notes = get_notes(midi_path_to_continue, 'midiToContinue/for_test')
         X = []
@@ -54,7 +54,7 @@ def predict_and_sample_random(model, notes_to_ix):
             n = note_to_one_hot(note, notes_to_ix)
             X.append(n)
         X = X[-n_notes_before:]
-    """-------------------------------------------------------------------------------"""
+
     one_hots = X[:]
     for i in range(Ty):
         X_in = np.reshape(np.array(X), (1, len(X), len(notes_to_ix)))
