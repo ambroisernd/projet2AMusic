@@ -1,4 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c66e6d20dd2e47a18e7bdc36d98493e7)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ambroisernd/projet2AMusic&amp;utm_campaign=Badge_Grade)
+[![GitHub issues](https://img.shields.io/github/issues/ambroisernd/projetWeb)](https://github.com/ambroisernd/projetWeb/issues)
 
 # Génération de musique par approche neuronale
 
