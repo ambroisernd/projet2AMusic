@@ -52,7 +52,7 @@ if __name__ == "__main__":
     generate_music()
 ```
 
-**Des erreurs sont survenues ?**
+## Dépendance
 
 Dans ce modèle il est nécessaire d'avoir installé
 
