@@ -6,7 +6,7 @@ Paramétrer via settings
 
 settings.py :
 
-´´´python
+```python
 n_notes_before = 20  # sequence length
 
 # Train
@@ -31,7 +31,7 @@ random_notes = False
 pick_from_training_data = False
 choose_n_notes_before = False
 continue_midi_file = True
-´´´
+```
 
 Il vous suffit de modifier les variables afin d'utiliser les options et les modèles que vous souhaitez
 
@@ -46,11 +46,11 @@ Une première génération
 
 Une fois les variables définis comme convenues, il suffit d'exécuter le script predict.py
 
-´´´python
+```python
 if __name__ == "__main__":
     # execute only if run as a script
     generate_music()
-´´´
+```
 
 Des erreurs sont survenues ?
 
