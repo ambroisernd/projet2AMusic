@@ -29,7 +29,7 @@ def predict_and_sample_random(model, notes_to_ix):
         for x in range(n_notes_before):
             notes.append(choose_random_note(notes_to_ix))
         X = notes[:]
-        
+
     # pick n = n_notes_before  from input files to predict the Ty-th following notes
     if pick_from_training_data:
         rnd = random.randint(0, len(notes) - random.randint(0, len(notes_to_ix) - 1))
