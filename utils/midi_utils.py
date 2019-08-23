@@ -4,7 +4,7 @@ from music21 import *
 import glob
 
 from utils.math_utils import RepresentsInt, parse_duration
-from utils.preprocessing import note_to_one_hot, one_hot
+from utils.preprocessing import one_hot
 import random as random
 
 
