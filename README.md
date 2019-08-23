@@ -1,6 +1,6 @@
 # Génération de musique par approche neuronale
 
-## Comment l'utiliser
+## Utilisation
 
 Paramétrer via settings
 
