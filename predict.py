@@ -63,9 +63,9 @@ def predict_and_sample_random(model, notes_to_ix):
         note_value = []
         if note_type != 0:
             for i in range(note_type):
-                max = np.argmax(pred[0][5:124]) + 5
-                note_value.append(max)
-                pred[0][max] = 0
+                maxi = np.argmax(pred[0][5:124]) + 5
+                note_value.append(maxi)
+                pred[0][maxi] = 0
         note_duration = np.argmax(pred[0][124:]) + 124
         Y = [0 for i in range(len(notes_to_ix))]
         Y[note_type] = 1
