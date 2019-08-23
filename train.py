@@ -3,13 +3,12 @@ import pickle
 from keras import Sequential
 from keras.callbacks import ModelCheckpoint
 from keras.engine.saving import load_model
-from keras.layers import LSTM, Dense, Activation, CuDNNLSTM, Dropout
+from keras.layers import Dense, Activation, CuDNNLSTM, Dropout
 
 from utils.midi_utils import get_notes, create_vocab_array
-from utils.preprocessing import generate_vocab, generate_X_Y_multi, generate_X_Y_one_hot
+from utils.preprocessing import generate_vocab, generate_X_Y_one_hot
 from utils.preprocessing import pb
 from utils.math_utils import unique
-import numpy as np
 from settings import *
 
 
