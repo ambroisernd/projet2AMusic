@@ -1,7 +1,7 @@
-# projet2AMusic
+# Génération de musique par approche neuronale
 
-Génération de musique par approche neuronale
-Comment l'utiliser
+## Comment l'utiliser
+
 Paramétrer via settings
 
 settings.py :
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     generate_music()
 ```
 
-Des erreurs sont survenues ?
+## Des erreurs sont survenues ?
 
 Dans ce modèle il est nécessaire d'avoir installé
 
