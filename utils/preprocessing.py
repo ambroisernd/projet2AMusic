@@ -2,7 +2,7 @@ import pickle
 
 import numpy as np
 from keras.utils import to_categorical
-from utils.math_utils import RepresentsInt, parse_duration
+from utils.math_utils import parse_duration
 pb  = []
 
 def generate_X_Y_note_to_note(note_to_index, notes, Tx, m):
@@ -55,7 +55,6 @@ def generate_X_Y_one_hot(notes_to_index, notes, n_notes):
 
 def note_to_one_hot(note, notes_to_index):
     X = []
-    problem = []
     try:
         if '$' in note:
             ch = note.split("$")
