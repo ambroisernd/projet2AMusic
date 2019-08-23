@@ -6,7 +6,7 @@ from keras.engine.saving import load_model
 from keras.layers import Dense, Activation, CuDNNLSTM, Dropout
 
 from utils.midi_utils import get_notes, create_vocab_array
-from utils.preprocessing import generate_vocab, generate_X_Y_one_hot
+from utils.preprocessing import generate_X_Y_one_hot
 from utils.preprocessing import pb
 from utils.math_utils import unique
 from settings import *
