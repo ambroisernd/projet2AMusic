@@ -52,17 +52,14 @@ if __name__ == "__main__":
     generate_music()
 ```
 
-## Des erreurs sont survenues ?
+**Des erreurs sont survenues ?**
 
 Dans ce modèle il est nécessaire d'avoir installé
 
-1/ CUDA toolkit : https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Windows&target_arch=x86_64
-
+1/ CUDA toolkit : [https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Windows&target_arch=x86_64]
 
 2/ CUDNN : https://developer.nvidia.com/rdp/cudnn-download
 
-
 3/ Avoir installé keras : https://keras.io/
-
 
 4/ Avoir installé tensorflow-gpu : https://www.tensorflow.org/install/gpu
