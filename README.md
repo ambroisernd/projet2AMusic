@@ -1,5 +1,6 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c66e6d20dd2e47a18e7bdc36d98493e7)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ambroisernd/projet2AMusic&amp;utm_campaign=Badge_Grade)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/keras)
+![Codacy grade](https://img.shields.io/codacy/grade/c66e6d20dd2e47a18e7bdc36d98493e7)
+
 
 # Génération de musique par approche neuronale
 
